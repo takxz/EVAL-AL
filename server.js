@@ -1,50 +1,16 @@
 const express = require('express');
 const data = require('./data');
 const createTeamsModule = require('./src/modules/Teams');
-
+const createRankingsModule = require('./src/modules/Rankings')
+const teamsModule = createTeamsModule()
 
 const app = express();
 app.use(express.json());
 
-function recalculateRanking() {
-  const standings = data.teams.map((team) => ({
-    teamId: team.id,
-    played: 0,
-    wins: 0,
-    draws: 0,
-    losses: 0,
-    points: 0,
-  }));
-
-  for (const match of data.matches) {
-    if (match.status !== 'completed') continue;
-
-    const team1 = standings.find((entry) => entry.teamId === match.team1Id);
-    const team2 = standings.find((entry) => entry.teamId === match.team2Id);
-    team1.played += 1;
-    team2.played += 1;
-
-    if (match.scoreTeam1 === match.scoreTeam2) {
-      team1.draws += 1;
-      team2.draws += 1;
-      team1.points += 1;
-      team2.points += 1;
-    } else {
-      const winner = match.scoreTeam1 > match.scoreTeam2 ? team1 : team2;
-      const loser = winner === team1 ? team2 : team1;
-      winner.wins += 1;
-      winner.points += 3;
-      loser.losses += 1;
-    }
-  }
-
-  standings.sort((first, second) => {
-    const firstName = data.teams.find((team) => team.id === first.teamId).name;
-    const secondName = data.teams.find((team) => team.id === second.teamId).name;
-    return second.points - first.points || firstName.localeCompare(secondName, 'fr');
-  });
-  data.ranking = standings;
-}
+const rankingsModule = createRankingsModule({
+  getTeams: teamsModule.getTeams,
+  getMatches: () => data.matches,
+});
 
 async function notifyTeams(match) {
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -57,6 +23,9 @@ async function notifyTeams(match) {
 }
 
 app.use('/teams', createTeamsModule().router);
+app.use('/teams', teamsModule.router)
+app.use('/ranking', createRankingsModule().router)
+app.use('/ranking', rankingsModule.router)
 
 app.get('/matches', (req, res) => {
   res.json(data.matches);
@@ -109,10 +78,6 @@ app.post('/matches/:id/result', async (req, res) => {
   recalculateRanking();
   await notifyTeams(match);
   res.json(match);
-});
-
-app.get('/ranking', (req, res) => {
-  res.json(data.ranking);
 });
 
 app.use((req, res) => {

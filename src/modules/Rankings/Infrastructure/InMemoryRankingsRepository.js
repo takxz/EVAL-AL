@@ -1,14 +1,15 @@
-const RankingsRepository = require("../Application/port/RankingsRepository");
-const User = require("../Domain/Rankings");
+const RankingsRepository = require("../Application/Port/RankingsRepository");
+const Rankings = require("../Domain/Rankings");
 
 class InMemoryRankingsRepository extends RankingsRepository{
     constructor(){
         super();
+        this
     }
 
-    async findRankings(){
+    async getRankings(){
 
     }
 }
 
-module.exports = InMemoryUserRepository;
+module.exports = InMemoryRankingsRepository;
