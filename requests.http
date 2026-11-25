@@ -1,0 +1,91 @@
+@baseUrl = http://localhost:3000
+
+### Consulter les six équipes — 200
+GET {{baseUrl}}/teams
+
+### Consulter les matchs — 200
+GET {{baseUrl}}/matches
+
+### Consulter le classement — 200
+GET {{baseUrl}}/ranking
+
+### Créer un match — 201
+# @name createMatch
+POST {{baseUrl}}/matches
+Content-Type: application/json
+
+{"team1Id": 1, "team2Id": 6}
+
+### Enregistrer le résultat du match créé — 200 après environ 3 secondes
+# Exécuter d'abord createMatch.
+POST {{baseUrl}}/matches/{{createMatch.response.body.$.id}}/result
+Content-Type: application/json
+
+{"scoreTeam1": 3, "scoreTeam2": 1}
+
+### Vérifier le classement après le résultat — 200
+GET {{baseUrl}}/ranking
+
+### Enregistrer un match nul sur un match initialement en attente — 200
+# Redémarrer l'application pour réinitialiser les données si nécessaire.
+POST {{baseUrl}}/matches/4/result
+Content-Type: application/json
+
+{"scoreTeam1": 0, "scoreTeam2": 0}
+
+### Résultat déjà enregistré — 409
+POST {{baseUrl}}/matches/1/result
+Content-Type: application/json
+
+{"scoreTeam1": 2, "scoreTeam2": 0}
+
+### Match inexistant — 404
+POST {{baseUrl}}/matches/999/result
+Content-Type: application/json
+
+{"scoreTeam1": 1, "scoreTeam2": 0}
+
+### Score négatif — 400 (le match 5 doit être en attente)
+POST {{baseUrl}}/matches/5/result
+Content-Type: application/json
+
+{"scoreTeam1": -1, "scoreTeam2": 0}
+
+### Score décimal — 400
+POST {{baseUrl}}/matches/5/result
+Content-Type: application/json
+
+{"scoreTeam1": 1.5, "scoreTeam2": 0}
+
+### Score manquant — 400
+POST {{baseUrl}}/matches/5/result
+Content-Type: application/json
+
+{"scoreTeam1": 1}
+
+### Une équipe contre elle-même — 400
+POST {{baseUrl}}/matches
+Content-Type: application/json
+
+{"team1Id": 1, "team2Id": 1}
+
+### Équipe inexistante — 404
+POST {{baseUrl}}/matches
+Content-Type: application/json
+
+{"team1Id": 1, "team2Id": 999}
+
+### Identifiant de mauvais type — 400
+POST {{baseUrl}}/matches
+Content-Type: application/json
+
+{"team1Id": "1", "team2Id": 2}
+
+### Corps absent — 400
+POST {{baseUrl}}/matches
+
+### JSON invalide — 400
+POST {{baseUrl}}/matches
+Content-Type: application/json
+
+{"team1Id": 1,
