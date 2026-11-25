@@ -1,6 +1,7 @@
 const express = require('express');
 const data = require('./data');
 const createTeamsModule = require('./src/modules/Teams');
+require('./src/modules/Notifications');
 
 const createRankingsModule = require('./src/modules/Rankings')
 const teamsModule = createTeamsModule()
