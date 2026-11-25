@@ -7,7 +7,7 @@ function getTeamsRoute(getTeams){
         try {
             const teams = await getTeams.execute();
             if(!teams){
-                return res.status(404).json({ message: "Not teams found" });
+                return res.status(404).json({ message: "No teams found" });
             }
             res.json(teams)
         } catch (error) {

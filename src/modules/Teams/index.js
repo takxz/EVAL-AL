@@ -7,6 +7,7 @@ function createTeamsModule({ repository = new InMemoryTeamsRepository() } = {}) 
 
     return {
         router: getTeamsRoute(getTeams),
+        getTeams: () => getTeams.execute(),
     };
 }
 
