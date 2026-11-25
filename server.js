@@ -1,11 +1,10 @@
 const express = require('express');
 const data = require('./data');
 const createTeamsModule = require('./src/modules/Teams');
+
 const createRankingsModule = require('./src/modules/Rankings')
 const teamsModule = createTeamsModule()
-
-const { CreateMatch, ResultMatch, GetMatches } = require('./src/modules/Matches');
-
+const { CreateMatch, ResultMatch, GetMatches } = require('./src/modules/Matches/Infrastructure/MatchRoutes');
 
 const app = express();
 app.use(express.json());
@@ -30,8 +29,8 @@ app.use('/teams', teamsModule.router)
 app.use('/ranking', createRankingsModule().router)
 app.use('/ranking', rankingsModule.router)
 
-app.use('/matches', GetMatches().router);
-app.use('/matches', CreateMatch().router);
+app.use('/matches', GetMatches());
+app.use('/matches', CreateMatch());
 app.use('/matches/:id/result', ResultMatch());
 
 
