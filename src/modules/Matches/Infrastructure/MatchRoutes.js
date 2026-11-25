@@ -1,7 +1,9 @@
-const express = resuire('express');
+const express = require('express');
 
 function CreateMatch(){
-    app.post('/matches', (req, res) => {
+    const router = express.Router();
+
+    router.post('/matches', (req, res) => {
         const { team1Id, team2Id } = req.body || {};
         if (!Number.isSafeInteger(team1Id) || !Number.isSafeInteger(team2Id)) {
         return res.status(400).json({ error: 'Les identifiants des équipes doivent être des entiers.' });
@@ -29,13 +31,17 @@ function CreateMatch(){
 }
 
 function GetMatches(){
-    app.get('/matches', (req, res) => {
+    const router = express.Router();
+
+    router.get('/matches', (req, res) => {
         res.json(data.matches);
     });
 }
 
 function ResultMatch(){
-    app.post('/matches/:id/result', async (req, res) => {
+    const router = express.Router();
+
+    router.post('/matches/:id/result', async (req, res) => {
         const match = data.matches.find((entry) => String(entry.id) === req.params.id);
         if (!match) {
             return res.status(404).json({ error: 'Match introuvable.' });
@@ -53,8 +59,8 @@ function ResultMatch(){
         match.scoreTeam1 = scoreTeam1;
         match.scoreTeam2 = scoreTeam2;
         match.status = 'completed';
-        recalculateRanking();
-        await notifyTeams(match);
+        // recalculateRanking();
+        // await notifyTeams(match);
         res.json(match);
     });
 }
