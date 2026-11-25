@@ -14,6 +14,8 @@ function getTeamsRoute(getTeams){
             next(error)
         }
     });
+
+    return router;
 }
 
 module.exports = getTeamsRoute;

@@ -15,17 +15,7 @@ class InMemoryTeamsRepository extends TeamsRepository {
     }
 
     findAll() {
-        return Array.from(this.teams.vlues())
-    }
-
-    async save(team) {
-        this.teams.set(
-            team.id,
-            new Team(
-                team.id,
-                team.name
-            )
-        )
+        return Array.from(this.teams.values())
     }
 }
 

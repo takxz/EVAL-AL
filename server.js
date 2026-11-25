@@ -1,5 +1,7 @@
 const express = require('express');
 const data = require('./data');
+const createTeamsModule = require('./src/modules/Teams');
+
 
 const app = express();
 app.use(express.json());
@@ -54,9 +56,7 @@ async function notifyTeams(match) {
   );
 }
 
-app.get('/teams', (req, res) => {
-  res.json(data.teams);
-});
+app.use('/teams', createTeamsModule().router);
 
 app.get('/matches', (req, res) => {
   res.json(data.matches);
