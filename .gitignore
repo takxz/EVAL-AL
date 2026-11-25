@@ -1,1 +1,6 @@
 /node_modules
+/src/modules/Matches/node_modules
+/src/modules/Notifications/node_modules
+/src/modules/Orchestrator/node_modules
+/src/modules/Rakings/node_modules
+/src/modules/Teams/node_modules
