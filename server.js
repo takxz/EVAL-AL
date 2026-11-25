@@ -1,7 +1,7 @@
 const express = require('express');
 const data = require('./data');
 const createTeamsModule = require('./src/modules/Teams');
-const { CreateMatch, ResultMatch, GetMatches } = require('./src/modules/Matches');
+const { CreateMatch, ResultMatch, GetMatches } = require('./src/modules/Matches/Infrastructure/MatchRoutes');
 
 
 const app = express();
@@ -59,8 +59,8 @@ async function notifyTeams(match) {
 
 app.use('/teams', createTeamsModule().router);
 
-app.use('/matches', GetMatches().router);
-app.use('/matches', CreateMatch().router);
+app.use('/matches', GetMatches());
+app.use('/matches', CreateMatch());
 app.use('/matches/:id/result', ResultMatch());
 
 

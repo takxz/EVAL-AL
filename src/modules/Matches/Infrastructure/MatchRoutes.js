@@ -1,7 +1,7 @@
-const express = resuire('express');
+const express = require('express');
 
 function CreateMatch(){
-    const router = express.router();
+    const router = express.Router();
 
     router.post('/matches', (req, res) => {
         const { team1Id, team2Id } = req.body || {};
@@ -31,7 +31,7 @@ function CreateMatch(){
 }
 
 function GetMatches(){
-    const router = express.router();
+    const router = express.Router();
 
     router.get('/matches', (req, res) => {
         res.json(data.matches);
@@ -39,7 +39,7 @@ function GetMatches(){
 }
 
 function ResultMatch(){
-    const router = express.router();
+    const router = express.Router();
 
     router.post('/matches/:id/result', async (req, res) => {
         const match = data.matches.find((entry) => String(entry.id) === req.params.id);
