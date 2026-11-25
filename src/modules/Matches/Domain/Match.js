@@ -6,7 +6,6 @@ class Match{
         this.scoreTeam1 = scoreTeam1;
         this.scoreTeam2 = scoreTeam2;
         this.status = status;
-        this.changeName(firstname,  lastname);
     }
 }
 
