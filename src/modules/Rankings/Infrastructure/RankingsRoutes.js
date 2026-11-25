@@ -1,7 +1,3 @@
-// app.get('/ranking', (req, res) => {
-//     res.json(data.ranking);
-// });
-
 const express = require("express");
 const data = require('./../data');
 
